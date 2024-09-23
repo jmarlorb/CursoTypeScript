@@ -1,0 +1,25 @@
+{
+  "name": "cursotypescript",
+  "version": "1.0.0",
+  "description": "Primeros pasos en Typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmarlorb/CursoTypeScript.git"
+  },
+  "author": "jmarlorb",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/jmarlorb/CursoTypeScript/issues"
+  },
+  "homepage": "https://github.com/jmarlorb/CursoTypeScript#readme",
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
+}
