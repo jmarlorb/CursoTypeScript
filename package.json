@@ -4,6 +4,9 @@
   "description": "Primeros pasos en Typescript",
   "main": "index.js",
   "scripts": {
+    "tsnode": "cd src && ts-node index.ts",
+    "start": "nodemon",
+    "transpilation":"npm exec tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
