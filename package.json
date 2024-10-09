@@ -20,8 +20,10 @@
   },
   "homepage": "https://github.com/jmarlorb/CursoTypeScript#readme",
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.5.5",
     "install": "^0.13.0",
+    "js-cookie": "^3.0.5",
     "nodemon": "^3.1.7",
     "npm": "^10.9.0",
     "ts-loader": "^9.5.1",

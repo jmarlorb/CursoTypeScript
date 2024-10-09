@@ -1,4 +1,4 @@
-import { log } from "console";
+import { Console, log } from "console";
 
 console.log("Hello World");
 /**
@@ -178,3 +178,68 @@ let funciongen = fgeneradora();
 funciongen.next(); //Tarea 1
 funciongen.next(); //Tarea 2
 
+//funcion ejercicio 2 P1.1
+function almacena(type:string = "SessionStorage", key:string, data:Tarea[]){
+    if (type.match("session")){
+sessionStorage.setItem(key,JSON.stringify(data));
+    } else if (type.match("local")){
+localStorage.setItem(key,JSON.stringify(data));
+    }
+}
+//ejercicio 3 P1.1
+almacena("session","datos",listaTareas);
+almacena("local","datos",listaTareas);
+
+//funcion ejercicio 4 P1.1
+function recupera(type:string = "session", key:string):string{
+    try {
+        let dato:string | null;
+        if  (type.match("session")){
+            dato = sessionStorage.getItem(key);
+        } 
+        else if  (type.match("local")){
+            dato= localStorage.getItem(key);
+        } else {
+            dato = null;
+        }
+        if (dato!=null){
+            return dato;
+        }
+    } catch (error) {
+        console.error("LocalStorage no definido")
+    }
+    throw new Error ("No se ha encontrado la key indicada")
+}
+
+//ejercicio 5 P1.1
+let aux:Tarea[] = JSON.parse(recupera("session","datos"));
+console.log(aux);
+aux = JSON.parse(recupera("local","datos"));
+console.log(aux);
+
+//funcion ejercicio 6 P1.1
+function borra(type:string = "session", key:string){
+    if (type.match("session")){
+        sessionStorage.removeItem(key);
+            } else if (type.match("local")){
+        localStorage.removeItem(key);
+            }
+}
+
+//Ejercicio 6 P1.1
+
+borra("session","datos");
+borra("local","datos");
+
+//Ejercicio 7 P1.1
+import Cookies from "js-cookie";
+
+Cookies.set("nombre", "Julián", {expires:7,path:"/"});
+Cookies.set("apellido","Martínez",{expires:2});
+Cookies.set("email","jmarlorb@iescarrillo.es",{expires:4});
+console.log(Cookies.get("nombre"));
+console.log(Cookies.get("apellido"));
+console.log(Cookies.get("email"));
+Cookies.remove("nombre");
+Cookies.remove("apellido");
+Cookies.remove("email");
