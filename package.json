@@ -6,7 +6,7 @@
   "scripts": {
     "tsnode": "cd src && ts-node index.ts",
     "start": "nodemon",
-    "transpilation":"npm exec tsc",
+    "transpilation": "npm exec tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,8 +21,14 @@
   "homepage": "https://github.com/jmarlorb/CursoTypeScript#readme",
   "devDependencies": {
     "@types/node": "^22.5.5",
+    "install": "^0.13.0",
     "nodemon": "^3.1.7",
+    "npm": "^10.9.0",
+    "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
   }
 }
