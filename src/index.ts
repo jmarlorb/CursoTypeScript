@@ -1,245 +1,75 @@
 import { Console, log } from "console";
 
-console.log("Hello World");
-/**
- * string - Cadenas de caracteres
- * number - enteros y decimales
- * boolean - booleano
- * null - nulo
- * undefined - sin definir
- * any - Todos los tipos (No utilizar)
- */
+//Acceso elementos DOM
+let input:HTMLInputElement = document.getElementById("input-contenido") as HTMLInputElement;
+console.log(input.value);
+let btnsNuevoContenido = document.getElementsByName("btn-add-content") as NodeListOf<HTMLButtonElement>;
+let divs = document.getElementsByTagName("div") as HTMLCollectionOf<HTMLDivElement>;
 
-//Declarar variables
-var nombre:string = "Julián"; //global
-let apellido:string = "Martínez"; //local
-const PI:number = 3.1415;
+let elementosOL = document.querySelector("#lista-contenidos");
 
-console.log("Hola " + nombre +" " + apellido);
-console.log(nombre,apellido);
-console.log(`Hola ${nombre}`);
+let nuevoElemento:HTMLLIElement = document.createElement("li");
+nuevoElemento.innerText = "Nuevo Elemento";
+elementosOL?.append(nuevoElemento);
 
-let a:number = 2, b:number = 2.5, c:string = "patata";
+let divisor = document.getElementsByTagName("div")[0] as HTMLDivElement;
 
-let alumnos:string[] = ["Juan","Jose","Alex"];
-let valores:(string|number|boolean)[] = ["Pedro", 54, "Opossum",true];
-let valores2:(string|number|boolean)[] = [...valores,...alumnos];
-console.log(valores2);
-enum TareaEstado {
-    Terminada = "Terminada",
-    Comenzada = "Comenzada",
-    SinEmpezar = "SinEmpezar"
-}
+divisor.addEventListener('click',(evento:Event)=>{
+    console.log("Hola");
+})
 
-interface Tarea {
-    estado: TareaEstado;
-    nombre: string; 
-    prioridad: number;
-}
+let listaUno:HTMLOListElement = document.getElementsByTagName("ol")[0];
+let listaDos:HTMLOListElement = document.getElementsByTagName("ol")[1];
 
-let tarea1: Tarea = {
-    estado: TareaEstado.SinEmpezar,
-    nombre: "flush",
-    prioridad: 3
-};
-
-let tarea2: Tarea ={
-    estado: TareaEstado.Comenzada,
-    nombre: "step-in",
-    prioridad: 0
-}
-
-let tarea3: Tarea = {
-    estado: TareaEstado.Terminada,
-    nombre: "step-out",
-    prioridad: 4
-}
-
-for (let x=0; x<10; x++){
-    console.log(x);
-}
-
-let listaTareas:Tarea[] = [tarea1,tarea2,tarea3];
-
-listaTareas.forEach((tarea:Tarea)=>{console.log(`${tarea.estado}+${tarea.nombre}+${tarea.prioridad}`)});
-
-function saludar (nombre:string = "Julián", apellido?:string):void{
-    if (apellido!=undefined) {
-        console.log(`Hola ${nombre} ${apellido}`);
-    } else {
-        console.log(`Hola ${nombre}`);
+let moverElementoUnoADos = (cn:ChildNode)=>{
+    if (cn.nodeType == Node.ELEMENT_NODE){
+        cn.removeEventListener("mousedown",(event:Event)=>{
+        
+            if(cn.parentElement?.isSameNode(listaDos))
+                listaUno?.append(listaDos.removeChild(cn));
+    })
+        cn.addEventListener("mousedown",(event:Event)=>{
+            if(cn.parentElement?.isSameNode(listaUno))
+                listaDos?.append(listaUno.removeChild(cn));
+                
+        })
     }
-}
+} 
 
-saludar(undefined,"Martínez");
-
-//Función anónima
-
-let fanonima = function() {console.log("Hola Mundo")};
-
-fanonima();
-
-let fitera = function (elemento:Tarea, indice:number) {console.log(`La Tarea ${elemento.nombre} se encuentra en el índice ${indice}`)};
-
-listaTareas.forEach(fitera);
-
-//Funciones multiple params
-
-function muestraTareas(...tareas:Tarea[]): void{
-tareas.forEach(fitera);
-}
-
-muestraTareas(tarea1,tarea2);
-muestraTareas(...listaTareas);
-
-//Funciones arrow o lambda
-
-let farrow = (tarea:Tarea,indice:number) => {console.log(`La Tarea ${tarea.nombre} se encuentra en el índice ${indice}`)}
-listaTareas.forEach(farrow);
-listaTareas.forEach(function (elemento:Tarea, indice:number) {console.log(`La Tarea ${elemento.nombre} se encuentra en el índice ${indice}`)});
-
-//funcion callback;
-
-let fsum = function (a:number, b:number){return a+b};
-let fsub = function (a:number, b:number){return a-b};
-
-function operate(x:number, y:number, method:(a:number,b:number)=>number){
-    return method(x,y);
-}
-
-//funciones asincronas
-async function asincrona() {
-    let suma:number = 0;
-    for (let i= 0; i<=100000000; i++){
-        suma+=i;
+let moverElementoDosAUno = (cn:ChildNode)=>{
+    if (cn.nodeType == Node.ELEMENT_NODE){
+        cn.removeEventListener("mousedown",(event:Event)=>{
+            if(cn.parentElement?.isSameNode(listaUno))
+                listaDos?.append(listaUno.removeChild(cn));
+           
+    })
+        cn.addEventListener("mousedown",(event:Event)=>{
+            if(cn.parentElement?.isSameNode(listaDos))
+                listaUno?.append(listaDos.removeChild(cn));
+                
+        })
     }
-    return suma;
-}
+} 
 
-asincrona().then((data:number)=>{console.log(`El resultado de ejecutar asincrona es = ${data}`)});
+listaUno.childNodes.forEach(moverElementoUnoADos);
 
-console.log("Linea posterior a la llamada a la funcion asincrona.");
+listaDos.childNodes.forEach(moverElementoDosAUno);
 
-async function getUniversitiesAsync(pais:string) : Promise <JSON[]> {
-    let index:number = 0;
-    const apiURL:string = "http://universities.hipolabs.com/search?country=";
+const config = {childList:true, subtree:true};
 
-    //Construimos la URL de la API a consultar concatenando el pais que se quiere filtrar
-    let url:string = `${apiURL}${pais}`;
-    
-    // Con la función fetch accedemos hacemos una petición GET y obtenemos los resultados. 
-    // Usamos await para indicar que hasta que no termine esta instrucción no se ejecuta la siguiente
-    let respuesta:Response = await fetch(url);
-    // Convertimos la respuesta de la petición GET en un archivo JSON
-    let datos:Promise<JSON[]> = await respuesta.json() as Promise<JSON[]>;
-    return datos
-}
- 
-
-// Llamamos a la función asincrona y mostramos el JSON de las universidades existentes en Spain
-getUniversitiesAsync("Spain").then((data:JSON[])=>{console.log(data[1])});
-
-type university = {
-    domains:String[],
-    alpha_two_code:String,
-    web_pages:String[],
-    name:String,
-
-}
-
-async function getUniversitiesAsynchro(pais:string) : Promise <university[]> {
-    let index:number = 0;
-    const apiURL:string = "http://universities.hipolabs.com/search?country=";
-
-    //Construimos la URL de la API a consultar concatenando el pais que se quiere filtrar
-    let url:string = `${apiURL}${pais}`;
-    
-    // Con la función fetch accedemos hacemos una petición GET y obtenemos los resultados. 
-    // Usamos await para indicar que hasta que no termine esta instrucción no se ejecuta la siguiente
-    let respuesta:Response = await fetch(url);
-    // Convertimos la respuesta de la petición GET en un archivo JSON
-    let datos:Promise<university[]> = await respuesta.json() as Promise<university[]>;
-    return datos
-}
-
-getUniversitiesAsynchro("Spain").then((data:university[])=>{
-    data.forEach((uni:university)=>console.log(`${uni.name}`));
-});
-
-//funciones generadoras
-function* fgeneradora():Generator<Tarea>{
-for (let tarea in listaTareas){
-    yield listaTareas[tarea];
-}
-}
-
-let funciongen = fgeneradora();
-
-funciongen.next(); //Tarea 1
-funciongen.next(); //Tarea 2
-
-//funcion ejercicio 2 P1.1
-function almacena(type:string = "SessionStorage", key:string, data:Tarea[]){
-    if (type.match("session")){
-sessionStorage.setItem(key,JSON.stringify(data));
-    } else if (type.match("local")){
-localStorage.setItem(key,JSON.stringify(data));
-    }
-}
-//ejercicio 3 P1.1
-almacena("session","datos",listaTareas);
-almacena("local","datos",listaTareas);
-
-//funcion ejercicio 4 P1.1
-function recupera(type:string = "session", key:string):string{
-    try {
-        let dato:string | null;
-        if  (type.match("session")){
-            dato = sessionStorage.getItem(key);
-        } 
-        else if  (type.match("local")){
-            dato= localStorage.getItem(key);
-        } else {
-            dato = null;
+const callback = (mutationList: any, observer: any) => {
+    for (const mutation of mutationList) {
+      if (mutation.type === "childList") {
+        if (mutation.target.isSameNode(listaUno))
+            mutation.addedNodes.forEach(moverElementoUnoADos);
+        else if (mutation.target.isSameNode(listaDos)){
+            mutation.addedNodes.forEach(moverElementoDosAUno);
         }
-        if (dato!=null){
-            return dato;
-        }
-    } catch (error) {
-        console.error("LocalStorage no definido")
+      } 
     }
-    throw new Error ("No se ha encontrado la key indicada")
-}
+  };
 
-//ejercicio 5 P1.1
-let aux:Tarea[] = JSON.parse(recupera("session","datos"));
-console.log(aux);
-aux = JSON.parse(recupera("local","datos"));
-console.log(aux);
+  const observer = new MutationObserver(callback);
 
-//funcion ejercicio 6 P1.1
-function borra(type:string = "session", key:string){
-    if (type.match("session")){
-        sessionStorage.removeItem(key);
-            } else if (type.match("local")){
-        localStorage.removeItem(key);
-            }
-}
-
-//Ejercicio 6 P1.1
-
-borra("session","datos");
-borra("local","datos");
-
-//Ejercicio 7 P1.1
-import Cookies from "js-cookie";
-
-Cookies.set("nombre", "Julián", {expires:7,path:"/"});
-Cookies.set("apellido","Martínez",{expires:2});
-Cookies.set("email","jmarlorb@iescarrillo.es",{expires:4});
-console.log(Cookies.get("nombre"));
-console.log(Cookies.get("apellido"));
-console.log(Cookies.get("email"));
-Cookies.remove("nombre");
-Cookies.remove("apellido");
-Cookies.remove("email");
+  observer.observe(listaUno,config);
+  observer.observe(listaDos,config);
